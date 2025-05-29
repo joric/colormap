@@ -477,7 +477,7 @@ var marker = L.marker(latlng, {
   map.whenReady(drawGrid);
 
   map.on('zoom', e => {
-    document.title = `Joric's ColorMap (x${map.getZoom()})`
+    document.title = `Joric's Color Map (x${map.getZoom()})`
   });
 
   window.addEventListener("keydown",function (e) {
