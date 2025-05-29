@@ -273,9 +273,10 @@ window.onload = function() {
     }
 
     let text = [
-      `Duplicate colors: ${duplicateColors}`,
-      `Missing colors: ${missingColors}`,
       `Unique colors: ${uniqueColors}`,
+      `Duplicate colors: ${duplicateColors}`,
+      `Total colors: ${duplicateColors+uniqueColors}`,
+      `Missing colors: ${missingColors}`,
     ].join('<br>');
 
     document.querySelector('#info').innerHTML = text;
