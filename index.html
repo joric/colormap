@@ -272,18 +272,10 @@ window.onload = function() {
         }
     }
 
-    /*
-    console.log(`Duplicate colors (appeared >1 time): ${duplicateColors}`);
-    console.log(`Missing colors (never appeared): ${missingColors}`);
-    console.log(`Unique colors (appeared exactly once): ${uniqueColors}`);
-    console.log(`Total colors in this image: ${uniqueColors + duplicateColors}`);
-    */
-
     let text = [
       `Duplicate colors: ${duplicateColors}`,
       `Missing colors: ${missingColors}`,
       `Unique colors: ${uniqueColors}`,
-      `Total colors: ${uniqueColors + duplicateColors}`
     ].join('<br>');
 
     document.querySelector('#info').innerHTML = text;
