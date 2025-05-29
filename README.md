@@ -32,3 +32,5 @@ def getPixelColor(x, y):
 * http://www.kindofdoon.com/2020/05/color-navigation-map.html
 * https://github.com/JoaoCostaIFG/allRGB
 * https://theodorelindsey.io/blog/2016/12/28/ProceduralAllColorImages.html
+* https://en.wikipedia.org/wiki/Wikipedia:Featured_picture_candidates/All_24-bit_RGB_colors
+
