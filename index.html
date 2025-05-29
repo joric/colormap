@@ -185,6 +185,7 @@ window.onload = function() {
     'Lindbloom': 'lindbloom.png',
     'Morton': 'morton.png',
     'HSV (lossy)': 'hsv.png',
+    'Gradient (lossy)': 'gradient.png',
 
     '16777216 Colors': '16777216colors.png', // https://en.wikipedia.org/wiki/File:16777216colors.png
 
@@ -221,8 +222,13 @@ window.onload = function() {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
     const rgbLookup = new Uint32Array(256 * 256 * 256); // 16.7M entries
+
     const colorCounts = new Uint16Array(256 * 256 * 256); // Track how many times each color appears
-    let duplicateCount = 0; 
+
+    let duplicateColors = 0;
+    let missingColors = 0;
+    let uniqueColors = 0;
+
     //rgbLookup.fill(0xFFFFFFFF); // sentinel value, do we need it?
     for (let y = 0; y < canvas.height; y++) {
       const yRow = y * canvas.width;
@@ -236,18 +242,28 @@ window.onload = function() {
 
         // Increment the count for this color
         colorCounts[rgbKey]++;
-            
-        // If this is the second time we're seeing this color, increment duplicateCount
-        if (colorCounts[rgbKey] === 2) {
-            duplicateCount++;
-        }
 
         rgbLookup[rgbKey] = packedCoords;
       }
     }
 
-    console.log(`Number of colors with duplicates: ${duplicateCount}`);
-    console.log(`Total unique colors: ${imageData.data.length / 4 - duplicateCount}`);
+    // Second pass: Check for duplicates & missing colors
+    for (let key = 0; key < colorCounts.length; key++) {
+        if (colorCounts[key] === 0) {
+            missingColors++; // Never appeared
+        } else {
+            if (colorCounts[key] === 1) {
+                uniqueColors++; // Appeared exactly once
+            } else {
+                duplicateColors++; // Appeared multiple times
+            }
+        }
+    }
+
+    console.log(`Duplicate colors (appeared >1 time): ${duplicateColors}`);
+    console.log(`Missing colors (never appeared): ${missingColors}`);
+    console.log(`Unique colors (appeared exactly once): ${uniqueColors}`);
+    console.log(`Total colors in this image: ${uniqueColors + duplicateColors}`);
 
     //console.timeEnd('lookup');
     return rgbLookup;
