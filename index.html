@@ -408,7 +408,7 @@ window.onload = function() {
           //.bindPopup(marker => { return popupText; })
           //.bindTooltip(marker => { return tooltipText; })
 
-          .bindPopup(marker => { return tooltipText; })
+          .bindPopup(marker => { return tooltipText; }, {offset:[0,-40]})
 
         marker.addTo(markers);
 
