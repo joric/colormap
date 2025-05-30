@@ -527,7 +527,7 @@ var marker = L.marker(latlng, {
 
         let [r,g,b] = getColor(x,y);
         const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-        stroke = brightness > 128 ? 'black' : 'white';
+        stroke = brightness > 200 ? 'black' : 'white';
 
         text.setAttribute('x', point.x+10);
         text.setAttribute('y', point.y+10);
