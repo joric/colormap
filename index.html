@@ -391,7 +391,7 @@ window.onload = function() {
 
         marker.feature = feature;
 
-        let id=title.toLowerCase().replace(/\s\d+$/,'').replace(' ','-');
+        let id=title.toLowerCase().replace(/\s\d+$/,'').replaceAll(' ','-');
 
         let popupText = '<pre>'+JSON.stringify(marker.feature, null, 2)+'</pre>';
 
