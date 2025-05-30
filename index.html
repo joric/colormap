@@ -435,7 +435,7 @@ var marker = L.marker(latlng, {
       }
       markerGroup.addLayer(markers);
 
-      console.log(`${count} markers loaded.`);
+      console.log(`${count} markers assigned, ${data.features.length-count} missing.`);
 
     })
 
