@@ -274,9 +274,9 @@ window.onload = function() {
 
     let text = [
       `Total colors: ${duplicateColors+uniqueColors}`,
+      `Unique colors: ${uniqueColors}`,
       `Missing colors: ${missingColors}`,
       `Duplicate colors: ${duplicateColors}`,
-      `Unique colors: ${uniqueColors}`,
     ].join('<br>');
 
     document.querySelector('#info').innerHTML = text;
