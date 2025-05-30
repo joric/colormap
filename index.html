@@ -391,10 +391,12 @@ window.onload = function() {
 
         marker.feature = feature;
 
+        let id=title.toLowerCase().replace(/\s\d+$/,'').replace(' ','-');
+
         let popupText = '<pre>'+JSON.stringify(marker.feature, null, 2)+'</pre>';
 
         let tooltipText = 
-         `<center><b>${marker.feature.properties.title}</b>`
+         `<center><b><a href="https://brandcolors.net/b/${id}" target=_blank>${marker.feature.properties.title}</a></b>`
           + `<div style="width: 64px; height: 64px; background:rgb(${marker.feature.geometry.coordinates.map(String).join(',')})"></div>`
           + marker.feature.geometry.coordinates
           + '<br>#' + marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')
