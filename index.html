@@ -215,6 +215,11 @@ window.onload = function() {
     //'AllRGB: FIFTY-FIFTY': 'https://allrgb.com/images/fifty-fifty.png',
     //'AllRGB: Dozen Patterns 1': 'https://allrgb.com/images/dozen-patterns-1.png',
     //'AllRGB: Dozen Patterns 2': 'https://allrgb.com/images/dozen-patterns-2.png',
+
+    // try CORS proxy maybe?
+    //'First (allorigins)': 'https://api.allorigins.win/raw?url=https://allrgb.com/images/first.png', //slow, rate-limited
+    //'First (corsproxy)': 'https://corsproxy.io/?https://allrgb.com/images/first.png', // blocks countries
+
   };
 
   let baseLayers = {};
@@ -235,13 +240,14 @@ window.onload = function() {
     const data = imageData.data;
     const rgbLookup = new Uint32Array(256 * 256 * 256); // 16.7M entries
 
-    const colorCounts = new Uint16Array(256 * 256 * 256); // Track how many times each color appears
+    const colorCounts = new Uint32Array(256 * 256 * 256); // Track how many times each color appears
 
     let missingColors = 0;
     let multiOccurrenceColors = 0;
     let singleOccurrenceColors = 0;
 
-    //rgbLookup.fill(0xFFFFFFFF); // sentinel value, do we need it?
+    rgbLookup.fill(0xFFFFFFFF); // sentinel value, we can use it because of 32-bit addressing
+
     for (let y = 0; y < canvas.height; y++) {
       const yRow = y * canvas.width;
       for (let x = 0; x < canvas.width; x++) {
@@ -289,6 +295,7 @@ window.onload = function() {
       const [r,g,b] = pixel;
       const rgbKey = r + (g << 8) + (b << 16);
       const packed = rgbLookup[rgbKey];
+      if (packed == 0xffffffff) return null;
       return [
           packed & 0xFFF,       // Lower 12 bits
           (packed >> 12) & 0xFFF // Upper 12 bits
@@ -329,7 +336,7 @@ window.onload = function() {
 
   let convert = rgb => {
     let p = getCoordinates(rgb);
-    return L.latLng( p[1]+.5, p[0]+.5 );
+    return p==null ? null : L.latLng( p[1]+.5, p[0]+.5 );
   };
 
   function onBaseLayerLoaded(layer) {
@@ -353,14 +360,17 @@ window.onload = function() {
       //disableClusteringAtZoom: 4,
     });
 
-    fetch('markers.json').then(r=>r.json()).then(data=>{
+    let count = 0;
 
-      console.log(`${data.features.length} markers loaded.`);
+    fetch('markers.json').then(r=>r.json()).then(data=>{
 
       for (const feature of data.features) {
 
         let title = feature.properties.title;
+
         let latlng = convert(feature.geometry.coordinates);
+
+        if (!latlng) continue;
 
         /*
 var marker = L.marker(latlng, {
@@ -420,8 +430,13 @@ var marker = L.marker(latlng, {
 
         marker.addTo(markers);
 
+        count++;
+
       }
       markerGroup.addLayer(markers);
+
+      console.log(`${count} markers loaded.`);
+
     })
 
   }
