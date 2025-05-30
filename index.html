@@ -237,9 +237,9 @@ window.onload = function() {
 
     const colorCounts = new Uint16Array(256 * 256 * 256); // Track how many times each color appears
 
-    let duplicateColors = 0;
     let missingColors = 0;
-    let uniqueColors = 0;
+    let multiOccurrenceColors = 0;
+    let singleOccurrenceColors = 0;
 
     //rgbLookup.fill(0xFFFFFFFF); // sentinel value, do we need it?
     for (let y = 0; y < canvas.height; y++) {
@@ -261,21 +261,22 @@ window.onload = function() {
 
     // Second pass: Check for duplicates & missing colors
     for (let key = 0; key < colorCounts.length; key++) {
-        if (colorCounts[key] === 0) {
-            missingColors++; // Never appeared
+      if (colorCounts[key] === 0) {
+          missingColors++; // Never appeared
+      } else {
+        if (colorCounts[key] === 1) {
+          singleOccurrenceColors++; // Appeared exactly once
         } else {
-            if (colorCounts[key] === 1) {
-                uniqueColors++; // Appeared exactly once
-            } else {
-                duplicateColors++; // Appeared multiple times
-            }
+          multiOccurrenceColors++; // Appeared multiple times
         }
+      }
     }
 
     let text = [
-      `Distinct colors: ${uniqueColors}`,
+      `Total colors: ${singleOccurrenceColors + multiOccurrenceColors}`,
+      `Single colors: ${singleOccurrenceColors}`,
+      `Duplicate colors: ${multiOccurrenceColors}`,
       `Missing colors: ${missingColors}`,
-      `Duplicate colors: ${duplicateColors}`,
     ].join('<br>');
 
     document.querySelector('#info').innerHTML = text;
