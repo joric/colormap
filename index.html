@@ -350,6 +350,7 @@ window.onload = function() {
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
       maxClusterRadius: 100,
+      //disableClusteringAtZoom: 4,
     });
 
     fetch('markers.json').then(r=>r.json()).then(data=>{
