@@ -106,12 +106,13 @@ text {
   transform: translateX(-50%);
   width: max-content;
   max-width: 200px;
-  font-size: 16px;
+  font-size: 13px;
   color: white;
-  text-shadow: 1px 1px black;
+  text-shadow: 1px 1px 4px black;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /*pointer-events: none;*/
 }
 
 #info {
@@ -372,48 +373,21 @@ window.onload = function() {
 
         if (!latlng) continue;
 
-        /*
-var marker = L.marker(latlng, {
-  icon: L.divIcon({
-    html: `
-      <div style="position: relative;">
-        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); 
-                   white-space: nowrap; font-size: 12px; font-weight: bold; color: black;
-                   text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;">
-          Your Label Text
-        </div>
-        <img src="https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png" style="width: 25px; height: 41px;">
-      </div>
-    `,
-    className: 'custom-marker-label' // Optional for additional styling
-  })
-});       */
-
-
-      let marker = L.marker(latlng, {
-        icon: L.divIcon({
-          html: `
-            <div class="custom-marker-container">
-              <div class="marker-icon"></div>
-              <div class="marker-label">${title}</div>
-            </div>
-          `,
-          className: 'custom-marker', // for additional styling
-          iconSize: [30, 50], // [width, height] - MUST include space for label
-          iconAnchor: [15, 40] // [x, y] - point of the icon that corresponds to marker location
+        let marker = L.marker(latlng, {
+          icon: L.divIcon({
+            html: `
+              <div class="custom-marker-container">
+                <div class="marker-icon"></div>
+                <div class="marker-label">${title}</div>
+              </div>
+            `,
+            className: 'custom-marker', // for additional styling
+            iconSize: [30, 50], // [width, height] - MUST include space for label
+            iconAnchor: [15, 40] // [x, y] - point of the icon that corresponds to marker location
+          })
         })
-      })
 
-
-      /*
-        const textIcon = L.divIcon({
-          className: 'custom-text-icon',
-          html: feature.properties.title,
-          iconSize: null,
-        });
-        */
-
-        //let marker = L.marker(convert(feature.geometry.coordinates), {icon: textIcon});
+        //let marker = L.marker(convert(feature.geometry.coordinates));
 
         marker.feature = feature;
 
@@ -422,11 +396,15 @@ var marker = L.marker(latlng, {
         let tooltipText = 
          `<center><b>${marker.feature.properties.title}</b>`
           + `<div style="width: 64px; height: 64px; background:rgb(${marker.feature.geometry.coordinates.map(String).join(',')})"></div>`
-          + marker.feature.geometry.coordinates;
+          + marker.feature.geometry.coordinates
+          + '<br>#' + marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')
+          ;
 
         marker
-          .bindPopup(marker => { return popupText; })
-          .bindTooltip(marker => { return tooltipText; })
+          //.bindPopup(marker => { return popupText; })
+          //.bindTooltip(marker => { return tooltipText; })
+
+          .bindPopup(marker => { return tooltipText; })
 
         marker.addTo(markers);
 
@@ -434,6 +412,10 @@ var marker = L.marker(latlng, {
 
       }
       markerGroup.addLayer(markers);
+
+      markers.on('clustermouseover', function(a) {
+        if (a.layer && (a.layer._childCount < 10)) a.layer.spiderfy();
+      });
 
       console.log(`${count} markers mapped, ${data.features.length-count} missing.`);
 
