@@ -126,6 +126,18 @@ text {
   padding: 8px;
 }
 
+.brandLink div {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brandLink {
+  text-decoration: none;
+}
+
 </style>
 
 <body>
@@ -375,11 +387,14 @@ window.onload = function() {
 
         let popupText = '<pre>'+JSON.stringify(marker.feature, null, 2)+'</pre>';
 
+
+        let hexColor = marker=>`#${marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+        let fgColor = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
+
         let popupContent = function(marker) {
-          return `<center><b><a href="https://brandcolors.net/b/${id}" target=_blank>${marker.feature.properties.title}</a></b>`
-            + `<div style="width: 64px; height: 64px; background:rgb(${marker.feature.geometry.coordinates.map(String).join(',')})"></div>`
+          return `<center><b>${marker.feature.properties.title}</b>`
+            + `<a class="brandLink" href="https://brandcolors.net/b/${id}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
             + marker.feature.geometry.coordinates
-            + '<br>#' + marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('');
           };
 
         marker.bindPopup(popupContent, { offset:[0,-40] })
