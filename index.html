@@ -359,7 +359,12 @@ window.onload = function() {
 
       for (const feature of data.features) {
 
-        let title = feature.properties.title;
+        let getId = name=>name.replace(/\-\d+$/,'');
+
+        let getTitle = name=>getId(name).split('-').map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join(' ');
+
+        let title = getTitle(feature.properties.name);
+        let id = getId(feature.properties.name);
 
         let latlng = convert(feature.geometry.coordinates);
 
@@ -383,17 +388,14 @@ window.onload = function() {
 
         marker.feature = feature;
 
-        let id=title.toLowerCase().replace(/\s\d+$/,'').replaceAll(' ','-');
-
         let popupText = '<pre>'+JSON.stringify(marker.feature, null, 2)+'</pre>';
-
 
         let hexColor = marker=>`#${marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')}`;
         let fgColor = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
 
         let popupContent = function(marker) {
-          return `<center><b>${marker.feature.properties.title}</b>`
-            + `<a class="brandLink" href="https://brandcolors.net/b/${id}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
+          return `<center><b>${getTitle(marker.feature.properties.name)}</b>`
+            + `<a class="brandLink" href="https://brandcolors.net/b/${id}" title="${marker.feature.properties.name}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
             + marker.feature.geometry.coordinates
           };
 
