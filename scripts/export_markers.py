@@ -20,7 +20,7 @@ for i,s in enumerate(open('brandcolors.less').read().splitlines()):
         base = re.sub(r'\s\d+$', '', title)
 
         if color not in colors[base]:
-            features.append({'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': color}, 'properties': {'name':t}})
+            features.append({'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': color}, 'properties': {'title':title}})
         else:
             #print('duplicate detected', title, base)
             pass
