@@ -508,7 +508,7 @@ window.onload = function() {
 
         let [r,g,b] = getColor(x,y);
         const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-        stroke = brightness > 200 ? 'black' : 'white';
+        stroke = brightness > 128 ? 'black' : 'white';
         const hex = '#' + [r,g,b].map(x => x.toString(16).padStart(2, '0')).join('')
         let labels = [`${x},${y}`,`${r},${g},${b}`,`${hex}`];
 
