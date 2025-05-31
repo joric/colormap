@@ -126,16 +126,18 @@ text {
   padding: 8px;
 }
 
-.brandLink div {
+.colorpad {
+  text-decoration: none;
+}
+
+.colorpad div {
   width: 64px;
   height: 64px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.brandLink {
-  text-decoration: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 </style>
@@ -394,7 +396,7 @@ window.onload = function() {
 
         let popupContent = function(marker) {
           return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-            + `<a class="brandLink" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
+            + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
             + marker.feature.geometry.coordinates
           };
 
