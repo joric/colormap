@@ -493,28 +493,41 @@ window.onload = function() {
       svg.appendChild(line);
     }
 
-    if (map.getZoom() <= 9) return;
+    if (map.getZoom() <= 8) return;
 
     for (let y = minY; y < maxY; y += spacing) {
       for (let x = minX; x < maxX; x += spacing) {
-        const point = map.latLngToLayerPoint([y, x]);
 
         let [r,g,b] = getColor(x,y);
         const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
         stroke = brightness > 128 ? 'black' : 'white';
         const hex = '#' + [r,g,b].map(x => x.toString(16).padStart(2, '0')).join('')
-        let labels = [`${x},${y}`,`${r},${g},${b}`,`${hex}`];
 
-        for (const i in labels ) {
-          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          text.setAttribute('x', point.x+10);
-          text.setAttribute('y', point.y+10 + i*16);
-          text.setAttribute('text-anchor', 'start');
-          text.setAttribute('dominant-baseline', 'hanging');
-          text.setAttribute('font-size', '13');
-          text.setAttribute('fill', stroke);
-          text.textContent = labels[i];
-          svg.appendChild(text);
+        if (map.getZoom()==9) {
+            const point = map.latLngToLayerPoint([y+.5, x+.5]);
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('font-size', '13');
+            text.setAttribute('fill', stroke);
+            text.setAttribute('x', point.x);
+            text.setAttribute('y', point.y);
+            text.setAttribute('text-anchor', 'middle');
+            text.setAttribute('dominant-baseline', 'middle');
+            text.textContent = hex;
+            svg.appendChild(text);
+        } else {
+          let labels = [`${x},${y}`,`${r},${g},${b}`,`${hex}`];
+          const point = map.latLngToLayerPoint([y, x]);
+          for (const i in labels ) {
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('font-size', '13');
+            text.setAttribute('fill', stroke);
+            text.setAttribute('x', point.x+10);
+            text.setAttribute('y', point.y+10 + i*16);
+            text.setAttribute('text-anchor', 'start');
+            text.setAttribute('dominant-baseline', 'hanging');
+            text.textContent = labels[i];
+            svg.appendChild(text);
+          }
         }
       }
     }
