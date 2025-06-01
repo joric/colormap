@@ -2,11 +2,20 @@
 
 Interactive RGB color map
 
-### Color Navigation Map
+## Brand Colors
+
+_The biggest collection of official brand color codes around._
+
+* https://brandcolors.net
+
+## Color Navigation Maps
 
 _Images Containing All Colors, and Their Limitations. This project originated from Bruce Lindbloom's "An RGB Image Containing All Possible Colors", which takes the RGB B value._
 
 * http://www.kindofdoon.com/2020/05/color-navigation-map.html
+
+### Bruce Lindbloom
+
 * http://www.brucelindbloom.com/index.html?RGB16Million.html
 
 ```python
@@ -23,12 +32,6 @@ _The objective of allRGB is simple: To create images with one pixel for every RG
 
 * Web: https://allrgb.com
 * Source code: https://github.com/allrgb
-
-## Brand Colors
-
-_The biggest collection of official brand color codes around._
-
-* https://brandcolors.net
 
 ## References
 
