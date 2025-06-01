@@ -10,11 +10,13 @@ _The biggest collection of official brand color codes around._
 
 ## Color Navigation Maps
 
-_Images Containing All Colors, and Their Limitations. This project originated from Bruce Lindbloom's "An RGB Image Containing All Possible Colors", which takes the RGB B value._
+_Images Containing All Colors, and Their Limitations._
 
 * http://www.kindofdoon.com/2020/05/color-navigation-map.html
 
 ### Bruce Lindbloom
+
+_This project originated from Bruce Lindbloom's "An RGB Image Containing All Possible Colors", which takes the RGB B value._
 
 * http://www.brucelindbloom.com/index.html?RGB16Million.html
 
