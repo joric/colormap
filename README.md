@@ -2,7 +2,6 @@
 
 Interactive RGB color map
 
-
 ## Bruce Lindbloom
 
 _Images Containing All Colors, and Their Limitations. This project originated from Bruce Lindbloom's "An RGB Image Containing All Possible Colors", which takes the RGB B value._
@@ -25,9 +24,14 @@ _The objective of allRGB is simple: To create images with one pixel for every RG
 * Web: https://allrgb.com
 * Source code: https://github.com/allrgb
 
-## References
+## Brand Colors
+
+_The biggest collection of official brand color codes around._
 
 * https://brandcolors.net
+
+## References
+
 * https://theodorelindsey.io/blog/2016/12/28/ProceduralAllColorImages.html
 * https://en.wikipedia.org/wiki/Wikipedia:Featured_picture_candidates/All_24-bit_RGB_colors
 
