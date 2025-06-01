@@ -355,14 +355,22 @@ window.onload = function() {
       //disableClusteringAtZoom: 4,
     });
 
+    let hexColor = marker=>`#${marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+    let fgColor = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
+    let getId = title=>title.toLowerCase().replace(/\s\d+$/,'').replaceAll(' ','-');
+    let getTitle = title=>title; //getId(name).split('-').map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join(' ');
+
+    let popupContent = function(marker) {
+      return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
+        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
+        + marker.feature.geometry.coordinates
+      };
+
     let count = 0;
 
     fetch('markers.json').then(r=>r.json()).then(data=>{
 
       for (const feature of data.features) {
-
-        let getId = title=>title.toLowerCase().replace(/\s\d+$/,'').replaceAll(' ','-');
-        let getTitle = title=>title; //getId(name).split('-').map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join(' ');
 
         let title = getTitle(feature.properties.title);
         let id = getId(feature.properties.title);
@@ -388,17 +396,6 @@ window.onload = function() {
         //let marker = L.marker(convert(feature.geometry.coordinates));
 
         marker.feature = feature;
-
-        let popupText = '<pre>'+JSON.stringify(marker.feature, null, 2)+'</pre>';
-
-        let hexColor = marker=>`#${marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')}`;
-        let fgColor = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
-
-        let popupContent = function(marker) {
-          return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-            + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
-            + marker.feature.geometry.coordinates
-          };
 
         marker.bindPopup(popupContent, { offset:[0,-40] })
 
