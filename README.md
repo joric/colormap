@@ -37,4 +37,4 @@ _The objective of allRGB is simple: To create images with one pixel for every RG
 
 * https://theodorelindsey.io/blog/2016/12/28/ProceduralAllColorImages.html
 * https://en.wikipedia.org/wiki/Wikipedia:Featured_picture_candidates/All_24-bit_RGB_colors
-
+* https://bottosson.github.io/misc/colorpicker/
