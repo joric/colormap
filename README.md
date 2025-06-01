@@ -1,4 +1,4 @@
-# ColorMap
+# Color Map
 
 Interactive RGB color map
 
