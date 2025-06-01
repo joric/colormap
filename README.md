@@ -2,7 +2,7 @@
 
 Interactive RGB color map
 
-## Bruce Lindbloom
+## Color Navigation Map
 
 _Images Containing All Colors, and Their Limitations. This project originated from Bruce Lindbloom's "An RGB Image Containing All Possible Colors", which takes the RGB B value._
 
