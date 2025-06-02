@@ -222,32 +222,18 @@ window.onload = function() {
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
-
       const imageData = ctx.createImageData(width, height);
       const data = imageData.data;
-
-      // Pixel generation logic
-      const getPixelColor = (x, y) => {
-          const r = x % 256;
-          const g = y % 256;
-          const b = (Math.floor(x / 256) + Math.floor(y / 256) * 16) % 256;
-          return [r, g, b, 255]; // RGBA (alpha = 255 for opaque)
-      };
-
-      // Fill pixel data
+      let i = 0;
       for (let y = 0; y < height; y++) {
           for (let x = 0; x < width; x++) {
-              const [r, g, b] = getPixelColor(x, y);
-              const index = (y * width + x) * 4; // 4 bytes per pixel (RGBA)
-              data[index] = r;     // Red
-              data[index + 1] = g; // Green
-              data[index + 2] = b; // Blue
-              data[index + 3] = 255; // Alpha (fully opaque)
+              data[i++] = x % 256;
+              data[i++] = y % 256;
+              data[i++] = (Math.floor(x / 256) + Math.floor(y / 256) * 16) % 256;
+              data[i++] = 255;
           }
       }
-
       ctx.putImageData(imageData, 0, 0);
-
       return canvas.toDataURL('image/png');
   }
 
