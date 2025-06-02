@@ -136,8 +136,6 @@ text {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 </style>
@@ -355,14 +353,14 @@ window.onload = function() {
       //disableClusteringAtZoom: 4,
     });
 
-    let hexColor = marker=>`#${marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')}`;
-    let fgColor = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
+    let getHex = marker=>`#${marker.feature.geometry.coordinates.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+    let getFg = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
     let getId = title=>title.toLowerCase().replace(/\s\d+$/,'').replaceAll(' ','-');
     let getTitle = title=>title; //getId(name).split('-').map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join(' ');
 
     let popupContent = function(marker) {
       return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}" title="${marker.feature.geometry.coordinates}">${hexColor(marker)}</div></a>`
+        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}" title="${marker.feature.geometry.coordinates}">${getHex(marker)}</div></a>`
       };
 
     let count = 0;
