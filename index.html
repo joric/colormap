@@ -362,8 +362,7 @@ window.onload = function() {
 
     let popupContent = function(marker) {
       return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}">${hexColor(marker)}</div></a>`
-        + marker.feature.geometry.coordinates
+        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${fgColor(marker)}; background:${hexColor(marker)}" title="${marker.feature.geometry.coordinates}">${hexColor(marker)}</div></a>`
       };
 
     let count = 0;
@@ -515,7 +514,7 @@ window.onload = function() {
             text.textContent = hex;
             svg.appendChild(text);
         } else {
-          let labels = [`${x},${y}`,`${r},${g},${b}`,`${hex}`];
+          let labels = [`${hex}`,`${x},${y}`,`${r},${g},${b}`];
           const point = map.latLngToLayerPoint([y, x]);
           for (const i in labels ) {
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
