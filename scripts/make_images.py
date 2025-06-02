@@ -142,7 +142,6 @@ def ordered(size=4096):
     c = 0
     for y in range(height):
         for x in range(width):
-            c = c&0xffffff
             r,g,b = c&0xff, (c>>8)&0xff, (c>>16)&0xff
             pixels[x, y] = b,g,r
             c += 1
