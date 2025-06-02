@@ -443,6 +443,19 @@ window.onload = function() {
   });
   */
 
+  map.on('mousemove', function(e) {
+    const [y, x] = [e.latlng.lat, e.latlng.lng];
+
+    if (x >= 0 && x < 4096 && y >= 0 && y < 4096) {
+      const color = getColor(x, y); // getColor should return [r, g, b]
+      const location = getCoordinates(color); // optional if you want location info too
+      const titleText = `${color.join(',')}`;
+      map.getContainer().title = titleText;
+    } else {
+      map.getContainer().title = '';
+    }
+  });
+
   const svgLayer = L.svg({padding: 2}).addTo(map);
   const svg = svgLayer._container;
 
