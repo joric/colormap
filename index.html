@@ -362,7 +362,8 @@ window.onload = function() {
 
     let popupContent = function(marker) {
       return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}" title="${getXY(marker)}\n${marker.feature.geometry.coordinates}">${getHex(marker)}</div></a>`
+        //+ `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}" title="${getXY(marker)}\n${marker.feature.geometry.coordinates}">${getHex(marker)}</div></a>`
+        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}">${getHex(marker)}</div></a>`
       };
 
     let count = 0;
@@ -426,35 +427,6 @@ window.onload = function() {
   const searchControl = new L.Control.Search({layer: markerGroup, hideMarkerOnCollapse: true}).addTo(map);
 
   map.getContainer().style.cursor = 'default';
-
-  /*
-  map.on('click', function(e) {
-    const [y,x] = [e.latlng.lat, e.latlng.lng];
-    if (x >= 0 && x < 4096 && y >= 0 && y < 4096) {
-      const color = getColor(x,y);
-      const location = getCoordinates(color);
-      L.popup().setLatLng(e.latlng).setContent(
-        `position ${x},${y}`
-        +`<br>lookup: ${location}`
-        + `<div style="width: 64px; height: 64px; background:rgb(${color.map(String).join(',')})"></div>`
-        +`${color}`
-      ).openOn(map);
-    }
-  });
-  */
-
-  map.on('mousemove', function(e) {
-    const [y, x] = [e.latlng.lat, e.latlng.lng];
-
-    if (x >= 0 && x < 4096 && y >= 0 && y < 4096) {
-      const color = getColor(x, y); // getColor should return [r, g, b]
-      const location = getCoordinates(color); // optional if you want location info too
-      const titleText = `${color.join(',')}`;
-      map.getContainer().title = titleText;
-    } else {
-      map.getContainer().title = '';
-    }
-  });
 
   const svgLayer = L.svg({padding: 2}).addTo(map);
   const svg = svgLayer._container;
@@ -527,7 +499,7 @@ window.onload = function() {
             text.textContent = hex;
             svg.appendChild(text);
         } else {
-          let labels = [`${hex}`,`${x},${y}`,`${r},${g},${b}`];
+          let labels = [`${hex}`,`${x},${y}`, `rgb(${r},${g},${b})`];
           const point = map.latLngToLayerPoint([y, x]);
           for (const i in labels ) {
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -544,6 +516,40 @@ window.onload = function() {
       }
     }
   }
+
+  map.on('mousemove', function(e) {
+    const target = e.originalEvent?.target;
+    const mapContainer = map.getContainer();
+    if (!target || !mapContainer.contains(target) || target !== mapContainer) {
+      mapContainer.title = '';
+      return;
+    }
+    const [y, x] = [e.latlng.lat, e.latlng.lng];
+    if (x >= 0 && x < 4096 && y >= 0 && y < 4096) {
+      const color = getColor(x, y); // getColor should return [r, g, b]
+      const location = getCoordinates(color); // optional if you want location info too
+      const titleText = `${location.join(',')}\nrgb(${color.join(',')})`;
+      map.getContainer().title = titleText;
+    } else {
+      map.getContainer().title = '';
+    }
+  });
+
+  /*
+  map.on('click', function(e) {
+    const [y,x] = [e.latlng.lat, e.latlng.lng];
+    if (x >= 0 && x < 4096 && y >= 0 && y < 4096) {
+      const color = getColor(x,y);
+      const location = getCoordinates(color);
+      L.popup().setLatLng(e.latlng).setContent(
+        `position ${x},${y}`
+        +`<br>lookup: ${location}`
+        + `<div style="width: 64px; height: 64px; background:rgb(${color.map(String).join(',')})"></div>`
+        +`${color}`
+      ).openOn(map);
+    }
+  });
+  */
 
   map.on('move zoomend moveend resize', drawGrid);
   map.whenReady(drawGrid);
