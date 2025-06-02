@@ -142,8 +142,9 @@ def ordered(size=4096):
     c = 0
     for y in range(height):
         for x in range(width):
-            r,g,b = c&0xff, (c>>8)&0xff, (c>>16)&0xff
-            pixels[x, y] = b,g,r
+            #r,g,b = c&0xff, (c>>8)&0xff, (c>>16)&0xff
+            #pixels[x, y] = b,g,r
+            pixels[x, y] = c
             c += 1
 
     return img
