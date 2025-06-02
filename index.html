@@ -217,6 +217,52 @@ window.onload = function() {
   let imageBounds = [[0, 0], [4096, 4096]];
   let defaultAttribution = `<a href="https://github.com/joric/colormap/blob/main/scripts/make_images.py">Joric's Color Map</a>`;
 
+  function generateImage(width, height) {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+
+      const imageData = ctx.createImageData(width, height);
+      const data = imageData.data;
+
+      // Pixel generation logic
+      const getPixelColor = (x, y) => {
+          const r = x % 256;
+          const g = y % 256;
+          const b = (Math.floor(x / 256) + Math.floor(y / 256) * 16) % 256;
+          return [r, g, b, 255]; // RGBA (alpha = 255 for opaque)
+      };
+
+      // Fill pixel data
+      for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+              const [r, g, b] = getPixelColor(x, y);
+              const index = (y * width + x) * 4; // 4 bytes per pixel (RGBA)
+              data[index] = r;     // Red
+              data[index + 1] = g; // Green
+              data[index + 2] = b; // Blue
+              data[index + 3] = 255; // Alpha (fully opaque)
+          }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      return canvas.toDataURL('image/png');
+  }
+
+  L.DynamicImageOverlay = L.ImageOverlay.extend({
+      initialize: function(bounds, options) {
+          this._bounds = L.latLngBounds(bounds);
+          L.setOptions(this, options);
+      },
+      onAdd: function(map) {
+          const imageUrl = generateImage(4096, 4096);
+          this.setUrl(imageUrl);
+          L.ImageOverlay.prototype.onAdd.call(this, map);
+      }
+  });
+
   let baseLayers = {
     'Lindbloom':             L.imageOverlay('images/lindbloom.png', imageBounds, { attribution: `<a href="http://www.brucelindbloom.com/index.html?RGB16Million.html">Bruce Lindbloom</a>`}),
     'Morton':                L.imageOverlay('images/morton.png', imageBounds, { attribution: defaultAttribution }),
@@ -230,6 +276,10 @@ window.onload = function() {
     'Dozen Patterns 2' :     L.imageOverlay('images/dozen-patterns-2.png', imageBounds, { attribution: '<a href="https://allrgb.com/dozen-patterns-2">BonesColored (allRGB)</a>' }),
     "JxL's Amazing #1" :     L.imageOverlay('images/jxls-amazing-1.png', imageBounds, { attribution: '<a href="https://allrgb.com/jxls-amazing-1">TPS (allRGB)</a>' }),
     "JxL's Astonishing #1" : L.imageOverlay('images/jxls-astonishing-1.png', imageBounds, { attribution: '<a href="https://allrgb.com/jxls-astonishing-1">TPS (allRGB)</a>' }),
+
+
+    //"Generative" : new L.DynamicImageOverlay(imageBounds, { attribution: defaultAttribution }),
+
   }
 
   const canvas = document.createElement('canvas');
