@@ -357,10 +357,11 @@ window.onload = function() {
     let getFg = marker=>{ const [r,g,b]=marker.feature.geometry.coordinates; return 0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'black':'white'; };
     let getId = title=>title.toLowerCase().replace(/\s\d+$/,'').replaceAll(' ','-');
     let getTitle = title=>title; //getId(name).split('-').map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join(' ');
+    let getXY = marker=>`${Math.floor(marker.getLatLng().lng)},${Math.floor(marker.getLatLng().lat)}`;
 
     let popupContent = function(marker) {
       return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}" title="${marker.feature.geometry.coordinates}">${getHex(marker)}</div></a>`
+        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}" title="${getXY(marker)}\n${marker.feature.geometry.coordinates}">${getHex(marker)}</div></a>`
       };
 
     let count = 0;
