@@ -126,16 +126,21 @@ text {
   padding: 8px;
 }
 
-.colorpad {
+.popup {
+  text-align: center;
+}
+
+.popup a {
   text-decoration: none;
 }
 
-.colorpad div {
+.popup div {
   width: 64px;
   height: 64px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 2px 0 4px 0;
 }
 
 </style>
@@ -361,8 +366,10 @@ window.onload = function() {
     let getXY = marker=>`${Math.floor(marker.getLatLng().lng)},${Math.floor(marker.getLatLng().lat)}`;
 
     let popupContent = function(marker) {
-      return `<center><b>${getTitle(marker.feature.properties.title)}</b>`
-        + `<a class="colorpad" href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}" target=_blank><div style="color:${getFg(marker)}; background:${getHex(marker)}" title="${marker.feature.geometry.coordinates}">${getHex(marker)}</div></a>`
+      return `<div class="popup"><b>${getTitle(marker.feature.properties.title)}</b><a
+        href="https://brandcolors.net/b/${getId(marker.feature.properties.title)}"
+        target=_blank><div style="color:${getFg(marker)};
+        background:${getHex(marker)}">${getHex(marker)}</div></a>${marker.feature.geometry.coordinates}</div>`;
       };
 
     let count = 0;
