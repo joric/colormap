@@ -499,7 +499,7 @@ window.onload = function() {
             text.textContent = hex;
             svg.appendChild(text);
         } else {
-          let labels = [`${hex}`,`${x},${y}`, `rgb(${r},${g},${b})`];
+          let labels = [`${hex}`,`x: ${x}, y: ${y}`, `rgb(${r}, ${g}, ${b})`];
           const point = map.latLngToLayerPoint([y, x]);
           for (const i in labels ) {
             const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -528,7 +528,7 @@ window.onload = function() {
     if (x >= 0 && x < 4096 && y >= 0 && y < 4096) {
       const color = getColor(x, y); // getColor should return [r, g, b]
       const location = getCoordinates(color); // optional if you want location info too
-      const titleText = `${location.join(',')}\nrgb(${color.join(',')})`;
+      const titleText = `x: ${location[0]}, y: ${location[1]}\nrgb(${color.join(', ')})`;
       map.getContainer().title = titleText;
     } else {
       map.getContainer().title = '';
