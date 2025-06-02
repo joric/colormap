@@ -134,11 +134,28 @@ def hsv(size=4096):
     
     return Image.fromarray(rgb)
 
+def ordered(size=4096):
+    width = height = size
+    img = Image.new("RGB", (width, height))
+    pixels = img.load()
+
+    c = 0
+    for y in range(height):
+        for x in range(width):
+            c = c&0xffffff
+            r,g,b = c&0xff, (c>>8)&0xff, (c>>16)&0xff
+            pixels[x, y] = b,g,r
+            c += 1
+
+    return img
+
+
 generators = [
 #    'lindbloom',
 #    'morton',
 #    'hsv_sorted'
-    'hsv',
+#    'hsv',
+    'ordered',
 ]
 
 generate = True
