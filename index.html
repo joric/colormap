@@ -603,7 +603,7 @@ window.onload = function() {
   map.whenReady(drawGrid);
 
   function updateTitle(e) {
-    document.title = `${pageTitle} (${map.getZoom()})`;
+    document.title = `${pageTitle} (zoom: ${map.getZoom()})`;
   }
 
   map.on('zoom', updateTitle);
