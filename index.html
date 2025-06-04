@@ -160,8 +160,6 @@ text {
 
 <script>
 
-let pageTitle = "Joric's Color Map";
-
 window.onload = function() {
 //  crs.projection.project = c => L.point(getPixelCoordinates(c.lat, c.lng, c.alt || 0));
 //  crs.projection.unproject = (p,zoom) => L.latLng(getPixelColor(p.x || 0, p.y || 0));
@@ -602,10 +600,8 @@ window.onload = function() {
   map.on('move zoomend moveend resize', drawGrid);
   map.whenReady(drawGrid);
 
-  function updateTitle(e) {
-    document.title = `${pageTitle} (zoom: ${map.getZoom()})`;
-  }
-
+  let pageTitle = document.title;
+  function updateTitle(e) { document.title = `${pageTitle} (zoom: ${map.getZoom()})`;}
   map.on('zoom', updateTitle);
   updateTitle();
 
